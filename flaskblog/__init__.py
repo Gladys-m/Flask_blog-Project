@@ -8,6 +8,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
 
 
 app.config['SECRET_KEY'] = '44d449b8bd70168c9397ae48c5c13d55'
