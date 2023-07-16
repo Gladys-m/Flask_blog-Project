@@ -91,7 +91,7 @@ def new_post():
         post = Post(title=form.title.data, content=form.content.data, author=current_user )
         db.session.add(post)
         db.session.commit()
-        flash('Post successfuly submitted!')
+        flash('Post successfuly submitted!', 'success')
         return redirect(url_for('home'))
     return render_template('create_post.html', title='New Post', form=form, legend='Create Post')
 
@@ -117,3 +117,15 @@ def update_post(post_id):
         form.title.data = post.title
         form.content.data = post.content
     return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
+
+
+@app.route("/post/<int:post_id>/delete", methods=['GET', 'POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been Deleted!', 'success')
+    return redirect(url_for('home'))
